@@ -1,0 +1,72 @@
+import React, { Component, Fragment } from 'react'
+// import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import * as postsActions from '../actions/posts'
+import * as commentsActions from '../actions/comments'
+import Post from './Post'
+/* MAIN APPPPPPP */
+class PhotoGrid extends Component {
+  componentDidMount() {
+    const { dispatch } = this.props
+    dispatch(postsActions.getPosts())
+    dispatch(commentsActions.getComments())
+    // this.props.postsActions.getPosts()
+    // this.props.getComments()
+    // this.props.dispatch(.getPosts())
+  }
+
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.selectedSubreddit !== prevProps.selectedSubreddit) {
+  //     const { dispatch, selectedSubreddit } = this.props
+  //     dispatch(fetchPostsIfNeeded(selectedSubreddit))
+  //   }
+  // }
+  render() {
+    // const { posts } = this.props
+    // console.log(posts)
+    // const postsList = this.props.posts.map(post => {
+    //   return <Post key={post.id}
+    //               title={post.title}
+    //               likeCounter={post.likeCounter} />
+    // })
+    //  let lists = Object.keys(posts).map(post => <p>{posts[post].id}</p>)
+    return (
+      <Fragment>
+        <header>PhotoGrid</header>
+        <div>
+          {this.props.posts.map(post => (
+            <div>
+              <Post key={post.postId} index={post.postId} {...post} />
+              <Link to={`/post/${post.id}`}>Whe who clicketh...</Link>
+            </div>
+          ))}
+        </div>
+      </Fragment>
+    )
+  }
+}
+/* {postsList} */
+/* <Posts posts={posts} /> */
+// PhotoGrid.propTypes = {
+//   // posts: PropTypes.array.isRequired,
+
+// }
+
+// const mapDispatchToProps = (dispatch) => ({
+//   ...bindActionCreators(actionCreators, dispatch),
+// })
+
+const mapStateToProps = state => ({
+  posts: state.posts,
+  comments: state.comments,
+  auth: state.auth,
+})
+
+// const mapDispatchToProps = (dispatch) => ({
+//   ...bindActionCreators(actionCreators, dispatch),
+// })
+
+export default connect(mapStateToProps)(PhotoGrid)
+
+// export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(component)
